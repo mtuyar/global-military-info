@@ -36,7 +36,7 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
   }
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-transparent flex items-center justify-center">
+    <div className="w-full h-full relative overflow-hidden bg-transparent flex items-center justify-center touch-pan-x touch-pan-y">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -49,10 +49,10 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
           }}
           className="w-full h-full"
         >
-          <ZoomableGroup 
-            zoom={position.zoom} 
-            center={position.coordinates} 
-            onMoveEnd={handleMoveEnd} 
+          <ZoomableGroup
+            zoom={position.zoom}
+            center={position.coordinates}
+            onMoveEnd={handleMoveEnd}
             maxZoom={4}
           >
             <Geographies geography={geoUrl}>
@@ -61,16 +61,16 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
                   const isSelected = selectedCountry === geo.properties.name;
                   const isHovered = hoveredCountry === geo.properties.name;
                   const score = globalScores[geo.properties.name];
-                  
+
                   let defaultFill = "rgba(255,255,255,0.15)";
                   let hoverFill = "rgba(255,255,255,0.25)";
-                  
+
                   if (score !== undefined) {
                     const opacity = 0.1 + (score / 100) * 0.8;
                     defaultFill = `rgba(212, 175, 55, ${opacity})`;
                     hoverFill = `rgba(212, 175, 55, ${Math.min(1, opacity + 0.2)})`;
                   }
-                  
+
                   return (
                     <Geography
                       key={geo.rsmKey}
@@ -128,14 +128,14 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
           </ZoomableGroup>
         </ComposableMap>
       </motion.div>
-      
+
       {/* Map overlay gradient for depth */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_transparent_40%,_var(--color-luxury-bg)_100%)]" />
 
-      {/* Tooltip */}
+      {/* Tooltip - desktop only */}
       {tooltip && (
-        <div 
-          className="fixed z-50 pointer-events-none bg-black/80 text-white px-3 py-1.5 rounded text-sm border border-white/10 backdrop-blur-sm shadow-xl"
+        <div
+          className="fixed z-50 pointer-events-none bg-black/80 text-white px-3 py-1.5 rounded text-sm border border-white/10 backdrop-blur-sm shadow-xl hidden md:block"
           style={{ left: tooltip.x + 15, top: tooltip.y + 15 }}
         >
           {tooltip.text}
@@ -143,28 +143,28 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
       )}
 
       {/* Zoom Controls */}
-      <div className="absolute bottom-6 right-6 z-30 flex flex-col gap-2">
+      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 flex flex-col gap-1.5 sm:gap-2">
         <div className="glass-panel rounded-xl overflow-hidden flex flex-col shadow-lg">
-          <button 
+          <button
             onClick={handleZoomIn}
-            className="p-3 bg-white/5 hover:bg-white/10 transition-colors border-b border-white/10"
+            className="p-2.5 sm:p-3 bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors border-b border-white/10"
             title="Zoom In"
           >
-            <Plus className="w-5 h-5 text-white/80" />
+            <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
           </button>
-          <button 
+          <button
             onClick={handleZoomOut}
-            className="p-3 bg-white/5 hover:bg-white/10 transition-colors border-b border-white/10"
+            className="p-2.5 sm:p-3 bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors border-b border-white/10"
             title="Zoom Out"
           >
-            <Minus className="w-5 h-5 text-white/80" />
+            <Minus className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
           </button>
-          <button 
+          <button
             onClick={handleReset}
-            className="p-3 bg-white/5 hover:bg-white/10 transition-colors"
+            className="p-2.5 sm:p-3 bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors"
             title="Reset Map"
           >
-            <Maximize className="w-5 h-5 text-white/80" />
+            <Maximize className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
           </button>
         </div>
       </div>

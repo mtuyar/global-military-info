@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Hero from "./components/Hero";
 import WorldMap from "./components/WorldMap";
@@ -48,7 +48,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cache, setCache] = useState<Record<string, CountryInsight>>({});
-  
+
   const [globalScores, setGlobalScores] = useState<Record<string, number>>({});
   const [isScoring, setIsScoring] = useState(false);
 
@@ -60,11 +60,11 @@ export default function App() {
     try {
       const response = await fetch("/api/global-defense-scores");
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || t.errorFetch);
       }
-      
+
       setGlobalScores(data);
     } catch (err: any) {
       console.error("Failed to fetch global scores", err);
@@ -86,7 +86,7 @@ export default function App() {
   };
 
   const handleCountryClick = async (countryName: string, countryCode: string) => {
-    if (selectedCountry === countryName) return; // Prevent duplicate requests
+    if (selectedCountry === countryName) return;
 
     setSelectedCountry(countryName);
     setError(null);
@@ -141,16 +141,16 @@ export default function App() {
       </div>
 
       {/* Language Toggle */}
-      <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-black/40 backdrop-blur-md p-1 rounded-full border border-white/10">
+      <div className="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2 bg-black/40 backdrop-blur-md p-1 rounded-full border border-white/10">
         <button
           onClick={() => setLanguage('tr')}
-          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${language === 'tr' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
+          className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-medium transition-colors ${language === 'tr' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
         >
           TR
         </button>
         <button
           onClick={() => setLanguage('en')}
-          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${language === 'en' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
+          className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-medium transition-colors ${language === 'en' ? 'bg-white/20 text-white' : 'text-white/50 hover:text-white'}`}
         >
           EN
         </button>
@@ -167,24 +167,24 @@ export default function App() {
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative min-h-screen w-full flex flex-col items-center justify-center py-20 px-4"
+              className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center py-16 sm:py-20 px-2 sm:px-4"
             >
-              <div className="absolute top-12 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none">
-                <h2 className="text-sm uppercase tracking-[0.4em] text-white/40 font-medium mb-2">
+              <div className="absolute top-8 sm:top-12 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none w-full px-4">
+                <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.4em] text-white/40 font-medium mb-1 sm:mb-2">
                   {t.mapTitle}
                 </h2>
-                <p className="text-white/60 font-light text-lg">
+                <p className="text-white/60 font-light text-sm sm:text-lg">
                   {t.mapDesc}
                 </p>
                 {isScoring && (
-                  <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                    <div className="w-4 h-4 border-2 border-[var(--color-luxury-accent)] border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm text-white/70">{t.analyzing}</span>
+                  <div className="mt-3 sm:mt-4 inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                    <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-[var(--color-luxury-accent)] border-t-transparent rounded-full animate-spin" />
+                    <span className="text-xs sm:text-sm text-white/70">{t.analyzing}</span>
                   </div>
                 )}
               </div>
 
-              <div className="w-full max-w-7xl h-[70vh] relative z-10">
+              <div className="w-full max-w-7xl h-[55vh] sm:h-[65vh] md:h-[70vh] relative z-10 mt-8 sm:mt-0">
                 <WorldMap
                   selectedCountry={selectedCountry}
                   onCountryClick={handleCountryClick}

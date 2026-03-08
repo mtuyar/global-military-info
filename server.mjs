@@ -55,7 +55,23 @@ async function startServer() {
 
             const langInstruction = language === 'tr' ? 'Respond entirely in Turkish.' : 'Respond entirely in English.';
 
-            const prompt = `You are a military intelligence analyst for a premium interactive geography experience. For the given country (${countryName}, ISO code: ${countryCode}), provide a concise overview of its military capabilities, armed forces, or defense strategy. Return a short elegant tagline related to its military, a one-sentence highlight of its most notable military strength or characteristic, a broad military category (e.g., 'Global Superpower', 'Regional Force', 'Defensive Military'), and a relevant emoji (e.g., 🛡️, ⚔️, 🚁). Do not give long paragraphs. Be concise, stylish, and UI-friendly. ${langInstruction}`;
+            const prompt = `You are a military intelligence analyst for a premium interactive geography experience. For the given country (${countryName}, ISO code: ${countryCode}), provide a comprehensive military analysis with the following details:
+
+1. A short elegant tagline related to its military identity
+2. A one-sentence highlight of its most notable military strength or characteristic
+3. A broad military category (e.g., 'Küresel Süper Güç', 'Bölgesel Güç', 'Savunma Odaklı', 'Gelişmekte Olan Güç', 'Barış Gücü')
+4. A relevant emoji (e.g., 🛡️, ⚔️, 🚁, 🎖️)
+5. Estimated annual military/defense budget (e.g., "$886 Milyar" or "$886 Billion")
+6. Estimated active military personnel count (e.g., "1.4 Milyon" or "1.4 Million")
+7. Estimated reserve military personnel count (e.g., "845,000")
+8. Estimated number of tanks/armored vehicles (e.g., "6,612")
+9. Estimated total military aircraft (e.g., "13,300")
+10. Estimated naval vessels count (e.g., "484")
+11. Nuclear warheads count ("0" if none, or actual number like "5,550")
+12. Estimated global military power rank (1 = strongest, number)
+13. Top 3 key military strengths as short phrases
+
+Be factual and use real-world estimates. Use concise, elegant, UI-friendly text. ${langInstruction}`;
 
             const aiClient = getAI();
             const response = await aiClient.models.generateContent({
@@ -72,22 +88,59 @@ async function startServer() {
                             },
                             tagline: {
                                 type: "STRING",
-                                description: "A short elegant tagline (e.g. 'Precision and innovation').",
+                                description: "A short elegant tagline.",
                             },
                             highlight: {
                                 type: "STRING",
-                                description: "A one-sentence highlight of the most iconic characteristic.",
+                                description: "A one-sentence highlight of the most iconic military characteristic.",
                             },
                             category: {
                                 type: "STRING",
-                                description: "A broad category (e.g. 'Technology', 'Nature', 'Culture').",
+                                description: "A broad military category.",
                             },
                             emoji: {
                                 type: "STRING",
                                 description: "A single representative emoji.",
                             },
+                            militaryBudget: {
+                                type: "STRING",
+                                description: "Estimated annual defense budget with currency symbol.",
+                            },
+                            activeMilitary: {
+                                type: "STRING",
+                                description: "Estimated active military personnel count.",
+                            },
+                            reserveMilitary: {
+                                type: "STRING",
+                                description: "Estimated reserve military personnel count.",
+                            },
+                            tanks: {
+                                type: "STRING",
+                                description: "Estimated number of tanks/armored vehicles.",
+                            },
+                            aircraft: {
+                                type: "STRING",
+                                description: "Estimated total military aircraft.",
+                            },
+                            navalVessels: {
+                                type: "STRING",
+                                description: "Estimated naval vessels count.",
+                            },
+                            nuclearWarheads: {
+                                type: "STRING",
+                                description: "Nuclear warheads count, '0' if none.",
+                            },
+                            globalRank: {
+                                type: "INTEGER",
+                                description: "Global military power ranking (1=strongest).",
+                            },
+                            strengths: {
+                                type: "ARRAY",
+                                items: { type: "STRING" },
+                                description: "Top 3 key military strengths as short phrases.",
+                            },
                         },
-                        required: ["country", "tagline", "highlight", "category", "emoji"],
+                        required: ["country", "tagline", "highlight", "category", "emoji", "militaryBudget", "activeMilitary", "reserveMilitary", "tanks", "aircraft", "navalVessels", "nuclearWarheads", "globalRank", "strengths"],
                     },
                 },
             });

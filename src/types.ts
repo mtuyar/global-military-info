@@ -4,10 +4,14 @@ export interface CountryInsight {
   highlight: string;
   category: string;
   emoji: string;
-}
-
-export interface CountryData {
-  name: string;
-  isoA2: string;
-  isoA3: string;
+  // Detailed military stats
+  militaryBudget: string;
+  activeMilitary: string;
+  reserveMilitary: string;
+  tanks: string;
+  aircraft: string;
+  navalVessels: string;
+  nuclearWarheads: string;
+  globalRank: number;
+  strengths: string[];
 }
