@@ -16,6 +16,13 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [position, setPosition] = useState({ coordinates: [0, 20] as [number, number], zoom: 1 });
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 640);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   function handleZoomIn() {
     if (position.zoom >= 4) return;
@@ -45,7 +52,7 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
       >
         <ComposableMap
           projectionConfig={{
-            scale: 140,
+            scale: isMobile ? 200 : 140,
           }}
           className="w-full h-full"
         >

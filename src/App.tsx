@@ -167,24 +167,24 @@ export default function App() {
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center py-16 sm:py-20 px-2 sm:px-4"
+              className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center py-0 sm:py-20 px-0 sm:px-4"
             >
-              <div className="absolute top-8 sm:top-12 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none w-full px-4">
-                <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.4em] text-white/40 font-medium mb-1 sm:mb-2">
+              <div className="absolute top-3 sm:top-12 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none w-full px-4">
+                <h2 className="text-[9px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.4em] text-white/40 font-medium mb-0.5 sm:mb-2">
                   {t.mapTitle}
                 </h2>
-                <p className="text-white/60 font-light text-sm sm:text-lg">
+                <p className="text-white/60 font-light text-xs sm:text-lg">
                   {t.mapDesc}
                 </p>
                 {isScoring && (
-                  <div className="mt-3 sm:mt-4 inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                    <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-[var(--color-luxury-accent)] border-t-transparent rounded-full animate-spin" />
-                    <span className="text-xs sm:text-sm text-white/70">{t.analyzing}</span>
+                  <div className="mt-2 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                    <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-[var(--color-luxury-accent)] border-t-transparent rounded-full animate-spin" />
+                    <span className="text-[10px] sm:text-sm text-white/70">{t.analyzing}</span>
                   </div>
                 )}
               </div>
 
-              <div className="w-full max-w-7xl h-[55vh] sm:h-[65vh] md:h-[70vh] relative z-10 mt-8 sm:mt-0">
+              <div className="w-full max-w-7xl h-[100dvh] sm:h-[65vh] md:h-[70vh] relative z-10">
                 <WorldMap
                   selectedCountry={selectedCountry}
                   onCountryClick={handleCountryClick}
