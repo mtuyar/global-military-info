@@ -276,9 +276,11 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
 
             {/* Rank Markers — zoom-adaptive */}
             {hasScores && visibleBadges.map(({ name, rank, centroid }) => {
-              const baseR = rank <= 3 ? 10 : rank <= 5 ? 8.5 : rank <= 10 ? 7 : 6;
+              // Bigger badges for multi-digit numbers
+              const isMultiDigit = rank >= 10;
+              const baseR = rank <= 3 ? 11 : rank <= 5 ? 9.5 : rank <= 10 ? 8 : isMultiDigit ? 8.5 : 7;
               const r = baseR * badgeScale;
-              const fontSize = (rank <= 3 ? 9 : rank <= 5 ? 8 : rank <= 10 ? 7 : 6) * badgeScale;
+              const fontSize = (rank <= 3 ? 9.5 : rank <= 5 ? 8.5 : rank <= 10 ? 7.5 : 6.5) * badgeScale;
 
               return (
                 <Marker key={name} coordinates={centroid!}>
@@ -286,22 +288,38 @@ export default function WorldMap({ onCountryClick, selectedCountry, globalScores
                     style={{ cursor: "pointer", filter: "url(#badgeShadow)" }}
                     onClick={() => onCountryClick(name, "")}
                   >
-                    <circle
-                      r={r}
-                      fill={getRankBadgeColor(rank)}
-                      fillOpacity={0.92}
-                      stroke="rgba(0,0,0,0.6)"
-                      strokeWidth={0.6 * badgeScale}
-                    />
+                    {/* Use rounded rect for multi-digit, circle for single */}
+                    {isMultiDigit ? (
+                      <rect
+                        x={-r * 1.3}
+                        y={-r}
+                        width={r * 2.6}
+                        height={r * 2}
+                        rx={r * 0.7}
+                        fill={getRankBadgeColor(rank)}
+                        fillOpacity={0.92}
+                        stroke="rgba(0,0,0,0.5)"
+                        strokeWidth={0.5 * badgeScale}
+                      />
+                    ) : (
+                      <circle
+                        r={r}
+                        fill={getRankBadgeColor(rank)}
+                        fillOpacity={0.92}
+                        stroke="rgba(0,0,0,0.5)"
+                        strokeWidth={0.5 * badgeScale}
+                      />
+                    )}
                     <text
                       textAnchor="middle"
                       dominantBaseline="central"
                       style={{
-                        fontFamily: "Inter, system-ui, sans-serif",
+                        fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
                         fontSize: `${fontSize}px`,
-                        fontWeight: 700,
-                        fill: rank <= 3 ? "#fff" : "#000",
-                        letterSpacing: "-0.5px",
+                        fontWeight: 800,
+                        fill: rank <= 3 ? "#fff" : "#111",
+                        letterSpacing: "0.3px",
+                        fontVariantNumeric: "tabular-nums",
                         pointerEvents: "none",
                       }}
                     >

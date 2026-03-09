@@ -223,6 +223,8 @@ export default function App() {
         : `${compareCountryA} vs ${compareCountryB}`
     : "";
 
+  const hasScores = Object.keys(globalScores).length > 0;
+
   return (
     <div className="min-h-screen bg-[var(--color-luxury-bg)] text-white font-sans selection:bg-[var(--color-luxury-accent)] selection:text-black">
       {/* Background */}
@@ -265,45 +267,49 @@ export default function App() {
                   {t.mapDesc}
                 </p>
                 {isScoring && (
-                  <div className="mt-2 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                    <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-[var(--color-luxury-accent)] border-t-transparent rounded-full animate-spin" />
-                    <span className="text-[10px] sm:text-sm text-white/70">{t.analyzing}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Compare mode toggle + status */}
-              <div className="absolute top-3 sm:top-6 left-3 sm:left-6 z-30 flex flex-col gap-2">
-                <button
-                  onClick={toggleCompareMode}
-                  className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-semibold tracking-wider transition-all ${compareMode
-                      ? 'bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#d4af37]'
-                      : 'bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10'
-                    }`}
-                >
-                  {compareMode ? (
-                    <>
-                      <X className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                      {t.viewMode}
-                    </>
-                  ) : (
-                    <>
-                      <GitCompareArrows className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                      {t.compareMode}
-                    </>
-                  )}
-                </button>
-
-                {compareMode && (
                   <motion.div
-                    initial={{ opacity: 0, y: -5 }}
+                    initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-black/60 backdrop-blur-md border border-[#d4af37]/20 rounded-xl px-3 py-2 text-[10px] sm:text-xs text-white/60 max-w-[200px] sm:max-w-none"
+                    className="mt-3 sm:mt-5 inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl bg-black/60 border border-[#d4af37]/20 backdrop-blur-xl"
                   >
-                    {compareStatusText}
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
+                    <span className="text-[10px] sm:text-sm text-[#d4af37]/80 font-medium">{t.analyzing}</span>
                   </motion.div>
                 )}
               </div>
+
+              {/* Compare button — bottom center, only after scores loaded */}
+              {!isScoring && hasScores && (
+                <div className="absolute bottom-20 sm:bottom-8 left-1/2 -translate-x-1/2 z-30">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    {!compareMode ? (
+                      <button
+                        onClick={toggleCompareMode}
+                        className="flex items-center gap-2 sm:gap-2.5 px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/15 text-white/70 hover:text-white hover:border-[#d4af37]/40 hover:bg-[#d4af37]/10 transition-all shadow-lg"
+                      >
+                        <GitCompareArrows className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                        <span className="text-[11px] sm:text-xs font-semibold tracking-wider">{t.compareMode}</span>
+                      </button>
+                    ) : (
+                      <div className="flex items-center gap-2 sm:gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-[#d4af37]/15 backdrop-blur-xl border border-[#d4af37]/30 shadow-lg">
+                        <span className="text-[10px] sm:text-xs text-[#d4af37]/80 font-medium max-w-[180px] sm:max-w-none truncate">
+                          {compareStatusText}
+                        </span>
+                        <button
+                          onClick={toggleCompareMode}
+                          className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+                        >
+                          <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/60" />
+                        </button>
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+              )}
 
               <div className="w-full max-w-[1400px] h-[100dvh] sm:h-[80vh] md:h-[85vh] relative z-10">
                 <WorldMap
